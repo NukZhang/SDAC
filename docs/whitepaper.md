@@ -24,10 +24,10 @@ flowchart TB
   %% =========================
   %% Human Authority Layer
   %% =========================
-  Human[Human<br/>(Authority)]
+  Human[Human<br>Authority]
 
-  Me2AI[Me2AI Spec<br/>• Requirements<br/>• Constraints<br/>• Iteration Plan]
-  IterSel[Iteration Selector<br/>• Current Iteration<br/>• No Cross-Iteration]
+  Me2AI[Me2AI Spec<br>- Requirements<br>- Constraints<br>- Iteration Plan]
+  IterSel[Iteration Selector<br>- Current Iteration<br>- No Cross-Iteration]
 
   Human --> Me2AI
   Human --> IterSel
@@ -35,9 +35,9 @@ flowchart TB
   %% =========================
   %% SDAC Governance Layer
   %% =========================
-  subgraph GOV["SDAC Governance Layer"]
-    Skill[SDAC SKILL<br/>• Execution Order<br/>• Minimal Completion Set<br/>• No Early Abstraction<br/>• No Cross-Iteration]
-    SubSkill[Sub Skills<br/>• Weapon System<br/>• AI System<br/>• State Machine]
+  subgraph "SDAC Governance Layer"
+    Skill[SDAC SKILL<br>- Execution Order<br>- Minimal Completion Set<br>- No Early Abstraction<br>- No Cross-Iteration]
+    SubSkill[Sub Skills<br>- Weapon System<br>- AI System<br>- State Machine]
 
     Skill --> SubSkill
   end
@@ -48,9 +48,9 @@ flowchart TB
   %% =========================
   %% AI Execution Layer
   %% =========================
-  subgraph EXEC["AI Execution Layer"]
-    AIExec[AI Execution<br/>• Line-level Coding<br/>• Follow Spec & Skill<br/>• No Requirement Decisions]
-    AIState[AI2AI State<br/>• Current Architecture<br/>• Completed Iterations<br/>• Active Constraints<br/><i>State, not Logs</i>]
+  subgraph "AI Execution Layer"
+    AIExec[AI Execution<br>- Line-level Coding<br>- Follow Spec and Skill<br>- No Requirement Decisions]
+    AIState[AI2AI State<br>- Current Architecture<br>- Completed Iterations<br>- Active Constraints<br>- State not Logs]
 
     AIExec --> AIState
   end
@@ -60,11 +60,11 @@ flowchart TB
   %% =========================
   %% SDAC Control Loop
   %% =========================
-  subgraph LOOP["SDAC Control Loop"]
-    Check[Checklist<br/>Spec / Skill Violation?]
-    Judge[Self Adjudication<br/>Level A / B / C]
-    Diff[Minimal Fix Diff<br/>Smallest Auditable Patch]
-    Compress[AI2AI Compression<br/>Keep Executable Truth]
+  subgraph "SDAC Control Loop"
+    Check[Checklist<br>- Spec or Skill Violation]
+    Judge[Self Adjudication<br>- Level A<br>- Level B<br>- Level C]
+    Diff[Minimal Fix Diff<br>- Smallest Auditable Patch]
+    Compress[AI2AI Compression<br>- Keep Executable Truth]
 
     Check --> Judge --> Diff --> Compress --> Check
   end
