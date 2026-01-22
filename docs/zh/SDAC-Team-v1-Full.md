@@ -56,23 +56,24 @@ main 合并必须串行 由 Release Owner 控制
 ## 3 SDAC-Team 的工程目录结构 建议
 
 在现有 SDAC 工程模板上增加以下目录
-
-/spec  
-  /Me2AI  
-  /AI2AI  
-  /team  
-    SDAC-Team.md  
-    CODEOWNERS.md  
-    WorkLanes.md  
-    MergeGate.md  
+```text
+/spec
+  /Me2AI              # SO 唯一可改
+  /AI2AI              # AI 可写，但受规则约束
+  /team
+    SDAC-Team.md      # 团队协作规则（本文）
+    CODEOWNERS.md     # 模块归属
+    WorkLanes.md      # 并行泳道/任务分配
+    MergeGate.md      # 合并闸门规则
+```
 
 并新增 GitHub 配置 强烈建议
-
+```text
 /.github  
   /ISSUE_TEMPLATE  
   /PULL_REQUEST_TEMPLATE.md  
   /workflows  
-
+```
 ---
 
 ## 4 并行泳道机制 Work Lanes
@@ -130,11 +131,11 @@ Acceptance
 
 合并到 main 前必须满足
 
-PR 仅修改 Allowed Paths  
-通过 Skill 违规检测 Checklist  
-若有违规 必须先给 Minimal Fix Diff  
-AI2AI 已更新 仅包含事实摘要  
-QV 验收通过
+- PR 仅修改 Allowed Paths  
+- 通过 Skill 违规检测 Checklist  
+- 若有违规 必须先给 Minimal Fix Diff  
+- AI2AI 已更新 仅包含事实摘要  
+- QV 验收通过
 
 ### PR 模板 最小版
 
@@ -181,7 +182,7 @@ Run steps screenshot notes
 ## 8 多 AI Prompt 规范 角色化
 
 ### AI Worker Prompt 最小版
-
+```markdown
 你是 SDAC-Team 的 AI Worker  
 任务属于 Iteration X Lane Y  
 只能修改 Allowed Paths  
@@ -192,56 +193,53 @@ Run steps screenshot notes
 通过 SDAC Checklist  
 如修复违规 先输出 Minimal Fix Diff  
 更新 AI2AI 仅写事实  
-
+不得写新需求 不得写设计建议 不得写未来规划 不得写讨论过程  
+```
 ---
 
 ### Module Owner Prompt 最小版
-
+```markdown
 你是 SDAC-Team 的 Module Owner  
 职责是审阅该 Lane 的修改是否越界  
 是否破坏接口  
 是否引入不必要抽象  
 不编写大量新代码  
-
+```
 ---
 
 ### Release Owner Prompt 最小版
-
+```markdown
 你是 SDAC-Team 的 Release Owner  
 职责是按 Merge Gate 串行合并  
 必要时要求回滚或最小修复  
 你是 main 的唯一闸门  
-
+职责是按 Merge Gate 顺序合并  
+必要时要求回滚或最小修复  
+```
 ---
 
 ## 9 AI2AI 在团队中的写法
 
 团队模式下 AI2AI 强制分两层
 
-AI2AI.md  
-全局压缩态  
-仅保留稳定架构 已完成事实 活跃约束
+- AI2AI.md:全局压缩态  (仅保留稳定架构 已完成事实 活跃约束)
 
-AI2AI_Lanes  
-IterationX-LaneY.md  
-各 Lane 自己维护局部事实
+- AI2AI_Lanes/IterationX-LaneY.md:各 Lane 自己维护局部事实
 
-由 Release Owner 定期触发状态压缩  
-将 Lane 有效结论合并回全局 AI2AI
+由 Release Owner 定期触发状态压缩  ,将 Lane 有效结论合并回全局 AI2AI
 
 ---
 
 ## 10 SDAC-Team 能带来的能力
 
-多 AI 并行不互踩  
-需求不被顺手扩展  
-main 合并可控 可回滚  
-状态长期可维护 不爆炸
+- 多 AI 并行不互踩  
+- 需求不被顺手扩展  
+- main 合并可控 可回滚  
+- 状态长期可维护 不爆炸
 
 ---
 
 一句话定义
-
-SDAC-Team  
-用工程制度  
-让多 AI 像团队开发一样稳定协作
+```text
+SDAC-Team=用工程制度让多 AI 像团队开发一样稳定协作
+```
