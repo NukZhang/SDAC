@@ -10,7 +10,7 @@
 - 子 Skill 模板（Weapon / AI / State Machine）
 
 ## 快速使用
-1. 阅读 `docs/whitepaper.md`
+1. 阅读 `docs/zh/whitepaper.md`
 2. 在真实项目中复制 `spec/` 目录
 3. 人类只维护 `spec/Me2AI/*`
 4. AI 只维护 `spec/AI2AI/AI2AI.md`，并严格遵循 `spec/SKILL.md`
