@@ -1,0 +1,71 @@
+{
+  "workflowId": "sdac-feature-v1",
+  "outputFormat": "stream-json",
+  "vars": {
+    "ISSUE_ID": "${ISSUE_ID}",
+    "LANE_ALLOWED": "${LANE_ALLOWED}",
+    "LANE_FORBIDDEN": "${LANE_FORBIDDEN}"
+  },
+  "tasks": [
+    {
+      "id": "me2ai_digest",
+      "assignTo": "documenter",
+      "description": "生成 spec.me2ai.digest（人工确认后写入 memory）",
+      "claudePrompt": "输出 JSON(memoryRecord) 写入 namespace=spec.me2ai.digest，包含 constraints/acceptance/out_of_scope/risks。"
+    },
+    {
+      "id": "ai2ai_spec",
+      "assignTo": "coordinator",
+      "depends": [
+        "me2ai_digest"
+      ],
+      "description": "生成 spec.ai2ai（任务拆解/验收/边界/lane）",
+      "claudePrompt": "输出 JSON(memoryRecord) 写入 namespace=spec.ai2ai，包含 tasks breakdown、dependencies、lane_limits、success_criteria。"
+    },
+    {
+      "id": "adr",
+      "assignTo": "architect",
+      "depends": [
+        "ai2ai_spec"
+      ],
+      "description": "生成 ADR（含 rollback）",
+      "claudePrompt": "输出 JSON(memoryRecord) 写入 namespace=adr，包含 decision/options/tradeoffs/impacts/rollback。"
+    },
+    {
+      "id": "diff_plan",
+      "assignTo": "coder",
+      "depends": [
+        "adr"
+      ],
+      "description": "生成最小 diff plan（文件清单+变更点+测试点）",
+      "claudePrompt": "输出 JSON(memoryRecord) 写入 namespace=tasks.${ISSUE_ID}，type=diff_plan，包含 files_to_change/edits/tests_to_add/lane(allowedPaths/forbiddenPaths)/rollback。"
+    },
+    {
+      "id": "qa_plan",
+      "assignTo": "tester",
+      "depends": [
+        "diff_plan"
+      ],
+      "description": "生成测试计划",
+      "claudePrompt": "输出 JSON(memoryRecord) 写入 namespace=qa.testplan，包含 testcases/commands/regression_scope/success_criteria。"
+    },
+    {
+      "id": "review_gate",
+      "assignTo": "reviewer",
+      "depends": [
+        "qa_plan"
+      ],
+      "description": "Gate：设计/范围/lane/风险 审查",
+      "claudePrompt": "输出 JSON: {approved:boolean, blockers:[], notes:[], requiredMemoryKeys:[]}，并生成一条 memoryRecord 写入 qa.findings（type=review）。"
+    },
+    {
+      "id": "release_notes",
+      "assignTo": "documenter",
+      "depends": [
+        "review_gate"
+      ],
+      "description": "生成 release.notes（待实际执行后补全证据）",
+      "claudePrompt": "输出 JSON(memoryRecord) 写入 namespace=release.notes，包含 summary/impacts/risks/rollback/checklist。"
+    }
+  ]
+}

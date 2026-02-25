@@ -1,0 +1,51 @@
+{
+  "workflowId": "sdac-bugfix-v1",
+  "outputFormat": "stream-json",
+  "vars": {
+    "BUG_ID": "${BUG_ID}"
+  },
+  "tasks": [
+    {
+      "id": "repro",
+      "assignTo": "analyst",
+      "description": "复现与最小化复现",
+      "claudePrompt": "输出 JSON(memoryRecord) 写入 namespace=tasks.${BUG_ID}，type=repro，包含 repro_steps/expected/actual/environment/logs_needed。"
+    },
+    {
+      "id": "root_cause",
+      "assignTo": "analyst",
+      "depends": [
+        "repro"
+      ],
+      "description": "根因与影响面",
+      "claudePrompt": "输出 JSON(memoryRecord) 写入 namespace=tasks.${BUG_ID}，type=root_cause，包含 root_cause/impacted_modules/risk/rollback。"
+    },
+    {
+      "id": "minimal_fix_plan",
+      "assignTo": "coder",
+      "depends": [
+        "root_cause"
+      ],
+      "description": "最小修复方案",
+      "claudePrompt": "输出 JSON(memoryRecord) 写入 namespace=tasks.${BUG_ID}，type=minimal_fix_plan，包含 files_to_change/patch_outline/tests_to_add/lane/rollback。"
+    },
+    {
+      "id": "regression_plan",
+      "assignTo": "tester",
+      "depends": [
+        "minimal_fix_plan"
+      ],
+      "description": "回归策略",
+      "claudePrompt": "输出 JSON(memoryRecord) 写入 namespace=qa.testplan，包含 commands/testcases/success_criteria。"
+    },
+    {
+      "id": "review_gate",
+      "assignTo": "reviewer",
+      "depends": [
+        "regression_plan"
+      ],
+      "description": "Gate：最小修复 + 不越界 + 可回滚",
+      "claudePrompt": "输出 JSON: {approved:boolean, blockers:[], notes:[]}，并写入 memory qa.findings(type=review)。"
+    }
+  ]
+}

@@ -1,3 +1,12 @@
-node_modules
-dist
+# Node / Frontend
+node_modules/
+dist/
+build/
+
+# OS / IDE
 .DS_Store
+.idea/
+.vscode/
+
+# Logs
+*.log
