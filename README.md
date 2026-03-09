@@ -1,33 +1,32 @@
-# Spec-Driven AICoding（SDAC）
+# 公众号二创项目仓库（基于 SDAC 模版）
 
-> **Make AI Executable, Not Creative.**  
-> A governance-first methodology for AI-assisted software engineering.
+> **把内容生产流程规范化，让 AI 在边界内稳定执行。**
 
-本仓库是 SDAC（Spec-Driven AICoding）对外发布的"工程化模板"，包含：
+本仓库以 SDAC（Spec-Driven AICoding）为母版，面向「公众号内容二创」场景，提供可直接落地的项目骨架：
 
-- 白皮书（方法论 + 实战示例，含 Mermaid 架构图）
-- Spec 分权模板（Me2AI / AI2AI）
-- SDAC 治理工具链（Checklist / 自我裁决 / Minimal Fix Diff / 状态压缩 / 一键总控）
-- 子 Skill 模板（Weapon / AI / State Machine）
-- Claude-Flow 编排模板（可选：多代理 + 共享记忆 + 工作流串联）
+- `spec/Me2AI/*`：由人类维护的业务需求与技术边界
+- `spec/AI2AI/AI2AI.md`：由 AI 维护的执行状态与可验证事实
+- `spec/SKILL.md` 与配套治理文档：约束 AI 行为，避免越权发挥
 
-## 快速使用（3 分钟）
+## 使用方式
 
-1) 阅读白皮书：`docs/zh/whitepaper.md`  
-2) 阅读快速上手：`docs/zh/quickstart.md`  
-3) 在真实项目中复制 `spec/` 目录（建议整个目录原样拷贝）  
-4) 人类只维护 `spec/Me2AI/*`  
-5) AI 只维护 `spec/AI2AI/AI2AI.md`，并严格遵循 `spec/SKILL.md`
+1. 先阅读并填写 `spec/Me2AI/需求描述.md`
+2. 再确认 `spec/Me2AI/技术约束.md`
+3. 让 AI 只在上述约束内执行，并持续更新 `spec/AI2AI/AI2AI.md`
+4. 每轮交付都给出可复现的验证命令与产物证据
 
-## 目录导航
+## 当前目标场景
 
-- 白皮书：`docs/zh/whitepaper.md`
-- 快速上手：`docs/zh/quickstart.md`
-- Claude-Flow 编排包：`docs/zh/claude-flow-pack.md`
-- 执行规范（AI 必读）：`spec/SKILL.md`
-- 一键总控 Prompt：`spec/OneKey_Control_Prompt.md`
-- SDAC-Team 协作规则：`spec-team/SDAC-Team.md`
-- 工具索引：`tools/README.md`
+- 输入：原始文章、选题方向、目标受众
+- 输出：符合公众号发布规范的二创稿件（含标题、摘要、正文、配图建议、发布信息）
+- 约束：不编造事实、不越权扩展功能、不修改人类给定边界
+
+## 目录
+
+- 人类规范：`spec/Me2AI/需求描述.md`
+- 技术约束：`spec/Me2AI/技术约束.md`
+- AI 执行状态：`spec/AI2AI/AI2AI.md`
+- AI 执行总规范：`spec/SKILL.md`
 
 ## 许可
 
