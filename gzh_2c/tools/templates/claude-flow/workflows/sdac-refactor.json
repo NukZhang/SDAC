@@ -1,0 +1,69 @@
+{
+  "workflowId": "sdac-refactor-v1",
+  "outputFormat": "stream-json",
+  "vars": {
+    "REFACTOR_ID": "${REFACTOR_ID}"
+  },
+  "tasks": [
+    {
+      "id": "target_arch",
+      "assignTo": "architect",
+      "description": "目标边界/禁止链路/迁移原则",
+      "claudePrompt": "输出 JSON(memoryRecord) 写入 namespace=adr，type=target_arch，包含 domain_boundaries/allowed_calls/forbidden_calls/migration_principles/rollback。"
+    },
+    {
+      "id": "lane_contracts",
+      "assignTo": "specialist",
+      "depends": [
+        "target_arch"
+      ],
+      "description": "为每个模块生成 contract + lane",
+      "claudePrompt": "输出多条 JSON(memoryRecord)：写入 namespace=modules.<module>.contract 与 modules.<module>.lane（allowedPaths/forbiddenPaths）。"
+    },
+    {
+      "id": "inventory",
+      "assignTo": "specialist",
+      "depends": [
+        "lane_contracts"
+      ],
+      "description": "迁移/删除/数据变更清单",
+      "claudePrompt": "输出 JSON(memoryRecord) 写入 namespace=tasks.${REFACTOR_ID}，type=inventory，包含 move_list/delete_list/data_migrations/risks。"
+    },
+    {
+      "id": "batches",
+      "assignTo": "coder",
+      "depends": [
+        "inventory"
+      ],
+      "description": "分批执行计划（每批可回滚）",
+      "claudePrompt": "输出 JSON(memoryRecord) 写入 namespace=tasks.${REFACTOR_ID}，type=batches，包含 batches:[{scope,steps,rollback,tests}] 与 lane_limits。"
+    },
+    {
+      "id": "verification_plan",
+      "assignTo": "tester",
+      "depends": [
+        "batches"
+      ],
+      "description": "验证指标与回归方案",
+      "claudePrompt": "输出 JSON(memoryRecord) 写入 namespace=qa.testplan，包含 metrics/commands/testcases/success_criteria。"
+    },
+    {
+      "id": "review_gate",
+      "assignTo": "reviewer",
+      "depends": [
+        "verification_plan"
+      ],
+      "description": "Gate：可安全推进（含回滚）",
+      "claudePrompt": "输出 JSON: {approved:boolean, blockers:[], notes:[]}，并写入 memory qa.findings(type=review)。"
+    },
+    {
+      "id": "release_notes",
+      "assignTo": "documenter",
+      "depends": [
+        "review_gate"
+      ],
+      "description": "发布说明模板",
+      "claudePrompt": "输出 JSON(memoryRecord) 写入 namespace=release.notes，包含 summary/impacts/risks/rollback/per-batch checklist。"
+    }
+  ]
+}
