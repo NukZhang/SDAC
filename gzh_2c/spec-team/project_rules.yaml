@@ -1,0 +1,29 @@
+---
+description: SDAC + Claude-Flow 执行规范（lane isolation + merge gate + 证据链）
+alwaysApply: true
+enabled: true
+---
+
+1) Claude Flow 只用于编排/记忆/审计；实际代码修改、运行命令由 Claude Code 执行（保持职责分离）。
+
+2) 双层 Spec：
+   - spec/Me2AI/* 仅由人类维护（最高优先级、只读）
+   - spec/AI2AI/AI2AI.md 仅由 AI 维护（只写事实状态）
+
+3) Spec 文件约束：
+   - 未经人类明确要求，不得新增 Spec 文件或 Spec 类型
+   - 不得在 Me2AI 内扩展新的内容种类
+
+4) Lane Isolation（强制）：
+   - MO 必须提供 Allowed Paths / Forbidden Paths（写入 modules.<module>.lane 或任务合同）
+   - AI-W 仅允许修改 Allowed Paths 内文件；任何越界修改一律视为违规，必须回滚或拆分任务
+
+5) Merge Gate（强制）：
+   - 未通过 QA（qa.findings=pass）不得合并
+   - 未通过 Reviewer 审查（approved=true）不得合并
+   - release.notes 未补全不得合并
+
+6) 输出必须结构化（JSON 优先），以支持 workflow 的 stream-json chaining 与自动化消费。
+
+7) 当发现漂移/违规/修补混乱：
+   - 必须使用 spec/OneKey_Control_Prompt.md 进行一键总控闭环
